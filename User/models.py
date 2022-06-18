@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-# Create your models here.
 
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None, email=None, realname=None):
@@ -68,4 +67,4 @@ class UserProfile(models.Model):
     user = models.OneToOneField(CustomUser, verbose_name='user', on_delete=models.CASCADE, default="")
     TMI = models.TextField('TMI', max_length=300, null=True)
     age = models.IntegerField('age', default=0)
-    favorite_dish = models.ManyToManyField(Dish, verbose_name='favorite_dish', related_name='userprofile')
+    favorite_dish = models.ManyToManyField(Dish, verbose_name='favorite_dish')

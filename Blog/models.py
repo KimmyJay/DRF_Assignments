@@ -13,4 +13,8 @@ class Article(models.Model):
     title = models.CharField("title", max_length=50)
     content = models.TextField("description", max_length=500)
 
+class Comment(models.Model):
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+    content = models.TextField("description", max_length=150)
 
