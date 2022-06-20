@@ -30,7 +30,7 @@ class CustomUser(AbstractBaseUser):
     password = models.CharField("password", max_length=128)
     email = models.EmailField("email", max_length=50)
     realname = models.CharField("realname", max_length=50)
-    join_date = models.DateField("joindate", auto_now_add=True)
+    join_date = models.DateTimeField("joindate", auto_now_add=True)
 
     USERNAME_FIELD = 'username'
 

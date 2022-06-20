@@ -1,6 +1,7 @@
 from tkinter import CASCADE
 from django.db import models
 from User.models import CustomUser
+from datetime import timedelta, datetime
 
 # Create your models here.
 class Category(models.Model):
@@ -15,6 +16,8 @@ class Article(models.Model):
     category = models.ManyToManyField(Category, related_name='article')
     title = models.CharField("title", max_length=50)
     content = models.TextField("description", max_length=500)
+    start_date = models.DateTimeField(default=datetime.now)
+    end_date = models.DateTimeField(default=datetime.now()+timedelta(minutes=2))
 
     def __str__(self):
         return self.title

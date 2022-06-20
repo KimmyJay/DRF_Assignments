@@ -25,8 +25,8 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     userprofile = UserProfileSerializer()
-    article_set = ArticleSerializer(many=True)
+    articles = ArticleSerializer(many=True, source="article_set")
     
     class Meta:
         model = CustomUser
-        fields = ["username", "realname", "email", "join_date", "userprofile", "article_set"]
+        fields = ["username", "realname", "email", "join_date", "userprofile", "articles"]
