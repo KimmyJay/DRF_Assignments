@@ -7,6 +7,8 @@ from .models import Article, Category
 
 from datetime import timedelta, datetime
 
+from .serializers import ArticleSerializer
+
 # custom permission class
 class RegisteredMoreThanThreeDaysUser(BasePermission):
     """
@@ -28,9 +30,10 @@ class UserArticle(APIView, RegisteredMoreThanThreeDaysUser):
     #유저가 작성한 기사들 조회
     def get(self, request):
         user = request.user
-        my_articles = str(Article.objects.filter(author=user))
+        my_articles = list(Article.objects.filter(author=user))            
+      
+        return Response([ArticleSerializer(article).data for article in my_articles])
 
-        return Response({'my_articles': my_articles})
     
     #기사 작성
     def post(self, request):
@@ -43,7 +46,7 @@ class UserArticle(APIView, RegisteredMoreThanThreeDaysUser):
             category = Category.objects.get(name=category)
             if len(title) > 5 and len(content) > 20:
                 my_article = Article.objects.create(
-                    author=user,
+                    user=user,
                     title=title,
                     content=content
                 )

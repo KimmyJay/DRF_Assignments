@@ -72,3 +72,12 @@ Whenever an object is instantiated, it is assigned a _unique object id_. The typ
 7. custom permission class를 활용해 가입 후 3일 이상 지난 사용자만 게시글을 쓸 수 있도록 해주세요
 - 테스트 할 때에는 가입 후 3분 이상 지난 사용자가 게시글을 쓸 수 있게 해주세요
 - join_date는 datetime field로 만들어주세요
+
+
+## Assignment 4(Django Admin)
+1. admin 페이지에 user admin을 등록하고, userprofile 테이블을 user admin 페이지에서 같이 보고 설정 할 수 있도록 해주세요
+2. article 테이블에 <노출 시작 일자, 노출 종료 일자>를 추가해주세요
+3. article view에 게시글 조회 기능을 만들되, 현재 일자를 기준으로 노출 시작 일자와 노출 종료 일자 사이에 있는 항목들만 리턴해주도록 필터를 설정해주세요
+ - 리턴 데이터는 게시글 작성일 기준으로 정렬하여 최근 쓴 글이 가장 먼저 올라오도록 해주세요
+4. 기존 article 생성 기능을 유지하되, article은 admin user 혹은 가입 후 7일이 지난 사용자만 생성 가능하도록 해주세요
+ - 조회는 로그인 한 사용자에 대해서만 가능하도록 설정해주세요
