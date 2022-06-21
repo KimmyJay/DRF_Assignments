@@ -1,0 +1,23 @@
+import os
+from tkinter import CASCADE
+from django.conf import settings
+from django.db import models
+from User.models import CustomUser
+from datetime import timedelta, datetime
+
+# Create your models here.
+
+def images_path():
+    return os.path.join(settings.LOCAL_FILE_DIR, 'images')
+
+class Product(models.Model):
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    title = models.CharField("title", max_length=50)
+    description = models.TextField("description", max_length=500)
+    thumbnail = models.FileField("thumbnail", upload_to="product/")
+    created = models.DateTimeField("created", auto_now_add=True)
+    start_date = models.DateTimeField("start_date", default=datetime.now)
+    end_date = models.DateTimeField("end_date", default=datetime.now()+timedelta(days=6))
+
+    def __str__(self):
+        return self.title

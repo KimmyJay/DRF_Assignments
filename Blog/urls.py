@@ -3,7 +3,7 @@ from django.urls import path
 from Blog import views
 
 urlpatterns = [
-    path('', views.UserArticle.as_view()),
+    path('', views.ArticleView.as_view()),
 
 
 ]

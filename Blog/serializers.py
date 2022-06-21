@@ -21,11 +21,27 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class ArticleSerializer(serializers.ModelSerializer):
     categories = serializers.SerializerMethodField()
-    comments = CommentSerializer(many=True, source="comment_set")
+    comments = CommentSerializer(many=True, source="comment_set", read_only=True)
 
     def get_categories(self, obj):
         return [category.name for category in obj.category.all()]
 
+
+    def create(self, validated_data):
+        Article.objects.create(**validated_data)
+        return validated_data
+
     class Meta:
         model = Article
-        fields = ["title", "categories", "content", "comments"]
+        fields = ["title", "categories", "content", "comments", "start_date", "end_date"]
+
+        extra_kwargs = {
+            'comments': {'write_only': True},
+            'email': {
+                'error_messages': {
+                    'required': '이메일을 입력해주세요',
+                    'invalid': '이메일 형식을 지켜주세요',
+                    'required': False
+                }
+            }
+        }

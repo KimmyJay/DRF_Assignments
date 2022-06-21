@@ -11,24 +11,22 @@ from Blog.serializers import ArticleSerializer
 
 from datetime import timezone, datetime, timedelta
 
-
-
-class UserArticle(APIView):
+class ArticleView(APIView):
     permission_classes = [IsAdminOrIsAuthenticatedReadOnly]
 
     # 로그인한 유저가 작성한 만료되지 않은 기사들 조회
     def get(self, request):
         user = request.user
-        my_articles = list(Article.objects.filter(author=user))
-        print(my_articles[0].end_date)
-
         now = datetime.now()
-        my_articles = list(Article.objects.filter(author=user, end_date__gte = now, start_date__lte = now).order_by('-start_date'))
-        print(my_articles)            
-      
-        return Response(ArticleSerializer(article).data for article in my_articles)
 
-    
+        my_articles = list(Product.objects.filter(
+            Q(author=user) |
+            Q(end_date__gte = now) |
+            Q(start_date__lte = now)).order_by('-start_date'))
+            
+        return Response(ArticleSerializer(my_articles, many=True).data)
+
+
     #기사 작성
     def post(self, request):
         user = request.user
@@ -55,4 +53,4 @@ class UserArticle(APIView):
                 return Response({'message': "Aritcle content must be longer!"})
         
         except Category.DoesNotExist:
-            return Response({'message': "Article must include a valid cateogry."})
+            return Response({'message': "Article must include a valid category."})

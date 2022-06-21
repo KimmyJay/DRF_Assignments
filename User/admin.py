@@ -1,7 +1,6 @@
 from django.contrib import admin
 from User.models import *
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.hashers import make_password
 
 class UserAdmin(BaseUserAdmin):
     list_display = ('realname', 'username') # 사용자 목록에 보여질 필드 지정
