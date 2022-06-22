@@ -16,17 +16,18 @@ class Article(models.Model):
     category = models.ManyToManyField(Category, related_name='article')
     title = models.CharField("title", max_length=50)
     content = models.TextField("content", max_length=500)
+    created = models.DateTimeField("created", auto_now_add=True)
     start_date = models.DateTimeField(default=datetime.now)
     end_date = models.DateTimeField(default=datetime.now()+timedelta(days=5))
 
     def __str__(self):
-        return self.title
+        return "{}님의 {}기사입니다.".format(self.author, self.title)
 
 class Comment(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
     content = models.TextField("content", max_length=150)
 
-    def __str__(self):
-        return self.content
+    # def __str__(self):
+    #     return self.content
 

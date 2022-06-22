@@ -30,27 +30,34 @@ class ArticleView(APIView):
     #기사 작성
     def post(self, request):
         user = request.user
-        title = request.data.get('title', '')
-        category = request.data.get('category', '')
-        content = request.data.get('content', '')
-       
-        try:
-            category = Category.objects.get(name=category)
-            if len(title) > 5 and len(content) > 20:
-                my_article = Article.objects.create(
-                    author=user,
-                    title=title,
-                    content=content
-                )
-                # You cannot directly add an object to ManyToManyField when creating an instance. 
-                my_article.category.add(category)
-                return Response({'message': "Article posted!"})
-            
-            elif len(title) < 5:
-                return Response({'message': "Aritcle title must be longer!"})
+        request.data['author'] = user.id
 
-            elif len(content) < 20:
-                return Response({'message': "Aritcle content must be longer!"})
+        # categorys = request.data.get('category', [])
+        article_serializer = ArticleSerializer(data=request.data, context={"request": request})
         
-        except Category.DoesNotExist:
-            return Response({'message': "Article must include a valid category."})
+        if article_serializer.is_valid(): # True or False 데이터가 유효한지 검사 
+            article_serializer.save()
+            return Response(article_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(article_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    
+
+    #게시글 수정
+    def put(self, request, obj_id):
+        article = Article.objects.get(id=obj_id)
+        # set partial=True to indicate we are editing only some fields
+        article_serializer = ArticleSerializer(article, data=request.data, partial=True, context={"request": request})
+        if article_serializer.is_valid():
+            article_serializer.save()
+            return Response(article_serializer.data, status=status.HTTP_200_OK)
+    
+        return Response(article_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    #게시글 삭제
+    def delete(self, request, obj_id):
+        article = Article.objects.get(id=obj_id)
+        aritlcle.remove()
+        return Response({"message": "게시글 삭제!!"})
+    
