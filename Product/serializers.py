@@ -55,14 +55,28 @@ class ProductSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         for key, value in validated_data.items():
             setattr(instance, key, value)
-        instance.save()
-        instance.description = f"<{instance.updated} 에 수정됨> "+ instance.description
-        instance.save()
-        
+
+        # 수정이 안됐을 때
+        if instance.updated == instance.created:
+            instance.description = f"<{instance.updated} 에 수정됨> \n"+ instance.description
+            instance.save()
+        # 이미 수정했을 때
+        else:
+            print(instance.description)
+            update_desc = instance.description.split("\\n")
+            print(update_desc)
+            desc="\n".join(update_desc[1:])
+            print(desc)
+            updated=f"<{instance.updated} 에 수정됨>\n" + desc
+            print(updated)
+
+            instance.description=updated
+            instance.save()
+
         return instance
     
     class Meta:
         model = Product
-        fields = ["seller", "title", "thumbnail", "created", "description", 
+        fields = ["seller", "title", "thumbnail", "description", 
                   "price", "average_review", "review", "is_active", 
                   "exposure_end_date", "exposure_start_date"]

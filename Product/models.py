@@ -25,7 +25,7 @@ class Product(models.Model):
     is_active = models.BooleanField("is_active", default=True)
 
     def __str__(self):
-        return "{}님의 {}상품입니다.".format(self.seller, self.title)
+        return self.title
 
 
 class Review(models.Model):
@@ -36,4 +36,4 @@ class Review(models.Model):
     created = models.DateTimeField("created", auto_now_add=True)
 
     def __str__(self):
-        return "{}가 {}상품에 남긴 리뷰입니다.".format(self.author, self.product)
+        return "{}님이 상품: {}에 남긴 리뷰입니다.".format(self.author, self.product)
